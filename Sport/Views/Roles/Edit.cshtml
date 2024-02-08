@@ -1,0 +1,50 @@
+﻿@using Microsoft.AspNetCore.Identity
+@model Sport.ViewModels.ChangeRoleViewModel
+@using Microsoft.AspNetCore.Http
+@using System.Security.Claims
+
+@{
+    Layout = "~/Views/Shared/_Menu.cshtml";
+    var user = ViewContext.HttpContext.User;
+    var role1 = user.FindFirst(ClaimTypes.Role)?.Value;
+}
+
+<h2>Изменение ролей для пользователя @Model.UserEmail</h2>
+
+<form asp-action="Edit" method="post">
+    <input type="hidden" name="userId" value="@Model.UserId" />
+    <div class="form-group">
+        @foreach (IdentityRole role in Model.AllRoles)
+        {
+            @if (@Model.UserEmail == "an3all@yandex.by")
+            {
+               
+                    <input disabled type="radio" name="roles" value="@role.Name"
+                           @(Model.UserRoles.Contains(role.Name) ? "checked=\"checked\"" : "") />@role.Name <br />
+                    
+                    
+                        
+
+                        
+            }
+            else
+            {
+                @if (role.Name == "admin")
+                {
+                    <input disabled type="radio" name="roles" value="@role.Name"
+                           @(Model.UserRoles.Contains(role.Name) ? "checked=\"checked\"" : "") />@role.Name <br />
+                    }
+                    else
+                    {
+                        <input type="radio" name="roles" value="@role.Name"
+                               @(Model.UserRoles.Contains(role.Name) ? "checked=\"checked\"" : "") />@role.Name <br />
+
+                        }
+            }
+        }
+
+
+
+    </div>
+    <button type="submit" class="btn btn-primary">Сохранить</button>
+</form>

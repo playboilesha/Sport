@@ -1,0 +1,66 @@
+﻿@{
+    Layout = "~/Views/Shared/_LoginRegister.cshtml";
+},
+@model Sport.ViewModels.RegisterViewModel
+<body class="text">
+    <div id="stars"></div>
+    <div id="stars2"></div>
+    <div id="stars3"></div>
+    <div class="section">
+        <div class="container">
+            <div class="row full-height justify-content-center">
+                <div class="col-12 text-center align-self-center py-5">
+                    <div class="section pb-5 pt-5 pt-sm-2 text-center">
+                        <h6 class="mb-0 pb-3 text"><span class="text"><a class="text" asp-controller="Account" asp-action="Login">Log In</a> </span><span class="text">Sign Up</span></h6>
+
+
+                        <div class="card-3d-wrap mx-auto">
+
+
+                            <div class="card-front">
+                                <div class="center-wrap">
+                                    <div class="section text-center">
+                                        <h4 class="mb-3 pb-3 text">Sign Up</h4>
+                                        <div asp-validation-summary="ModelOnly"></div>
+                                        <form method="post" asp-controller="Account" asp-action="Register">
+                                            <div class="form-group">
+                                                <input type="text" asp-for="UserName" class="form-style" placeholder="UserName">
+                                                <span asp-validation-for="UserName"></span>
+                                                <i class="input-icon uil uil-user"></i>
+                                            </div>
+                                            <div class="form-group mt-2">
+                                                <input type="email" asp-for="Email" class="form-style" placeholder="Email">
+                                                <span asp-validation-for="Email"></span>
+                                                <i class="input-icon uil uil-at"></i>
+                                            </div>
+                                            <div class="form-group mt-2">
+                                                <input type="number" asp-for="Year" class="form-style" placeholder="Year">
+                                                <span asp-validation-for="Year"></span>
+                                                <i class="input-icon uil uil-phone"></i>
+                                            </div>
+                                            <div class="form-group mt-2">
+                                                <input type="password" asp-for="Password" class="form-style" placeholder="Password">
+                                                <span asp-validation-for="Password"></span>
+                                                <i class="input-icon uil uil-lock-alt"></i>
+                                            </div>
+                                            <div class="form-group mt-2">
+                                                <input type="password" asp-for="PasswordConfirm" class="form-style" placeholder="PasswordConfirm">
+                                                <span asp-validation-for="PasswordConfirm"></span>
+                                                <i class="input-icon uil uil-lock-alt"></i>
+                                            </div>
+                                            <input type="submit" value="Register" class="btn mt-4" />
+
+                                        </form>
+                                    </div>
+
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+
+

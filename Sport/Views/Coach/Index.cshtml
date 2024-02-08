@@ -1,0 +1,36 @@
+﻿
+@model Sport.Models.Comment
+@{
+    ViewData["Title"] = "Trainer Details";
+}
+
+<h1>Trainer: @ViewBag.TrainerName</h1>
+
+<h2>User Comments:</h2>
+<div id="commentContainer">
+    @foreach (var comment in ViewBag.Comments)
+    {
+        <strong>@comment.UserName</strong><br>
+        <p>@comment.Comments</p>
+        <hr>
+    }
+</div>
+
+<form method="post" asp-controller="Coach" asp-route-id="@ViewBag.TrainerId" asp-action="AddComment">
+
+        <input type="hidden" asp-for="coach.Id" value="@ViewBag.TrainerId" required>
+
+
+
+        <input   type="hidden" asp-for="UserName" value="@User.Identity.Name" required><br>
+
+        <div>
+            <label >Message:</label>
+            <textarea asp-for="Comments"></textarea>
+        </div>
+
+        <input type="submit" value="Submit">
+    </form>
+
+
+

@@ -1,0 +1,207 @@
+﻿@{
+    Layout = "~/Views/Shared/_Menu.cshtml";
+}
+@model Sport.Models.GroupClassesRaspis
+
+<!-- Custom styles for this template -->
+
+
+<div class="container">
+
+    <div class="py-5 text-center">
+
+        <h1 class="h2">Групповое занятие @Model.Id</h1>
+
+    </div>
+    <form method="post" asp-controller="ClassGroup" asp-action="checkUser">
+        <div class="row g-3">
+            <div class="col-md-5 col-lg-4 order-md-last">
+                <h4 class="d-flex justify-content-between align-items-center mb-3">
+                    <span class="text-muted">Студенты</span>
+                    <span class="badge bg-secondary rounded-pill">@Model.ReservedPlace</span>
+                </h4>
+
+                <ul class="list-group mb-3">
+                    @foreach (var stu in ViewBag.Students)
+                    {
+
+
+                        <li class="list-group-item d-flex justify-content-between lh-sm">
+                            <div>
+
+                                <div class="container">
+                                    <div class="row">
+                                        <div class="col-sm">
+                                            <input type="hidden" name="idStu" id="idStu" value="@stu.Students.Id" />
+                                            <input type="hidden" name="idGroup" id="idGroup" value="@stu.Id" />
+                                            <h6 class="my-0">@stu.Students.User.FirstName @stu.Students.User.LastName</h6>
+                                            <input type="hidden" name="id" id="id" value="@Model.Id" />
+                                            <small class="text-muted">Опыт: @stu.Students.AboutExpireance</small>
+                                            <br />
+                                        </div>
+                                        <div class="col-sm">
+                                            <select class="form-select" aria-label="Default select example" id="status" name="status">
+
+
+                                                @if (stu.Check == Check.None)
+                                                {
+                                                    <option value="None" selected>None</option>
+                                                    <option value="Go">Пришёл</option>
+                                                    <option value="NotGo">Не пришёл</option>
+                                                }
+                                                @if (stu.Check == Check.Go)
+                                                {
+                                                    <option value="None">None</option>
+                                                    <option value="Go" selected>Пришёл</option>
+                                                    <option value="NotGo">Не пришёл</option>
+                                                }
+                                                @if (stu.Check == Check.NotGo)
+                                                {
+                                                    <option value="None">None</option>
+                                                    <option value="Go">Пришёл</option>
+                                                    <option value="NotGo" selected>Не пришёл</option>
+                                                }
+
+                                            </select>
+                                            <input class="btn btn-primary" type="submit" value="Изменить" />
+                                        </div>
+
+                                    </div>
+                                </div>
+
+
+
+
+
+                            </div>
+                            <hr class="my-4">
+                        </li>
+
+                    }
+
+                </ul>
+
+
+            </div>
+            @*<form method="post" asp-controller="ClassGroup" asp-route-idRaspis="@Model.Id" asp-action="RemoveGroupClass">*@
+            <div class="col-md-7 col-lg-8">
+                <h4 class="mb-3">Информация о занятии</h4>
+
+                <div class="row g-3">
+                    <div class="col-sm-6">
+                        <label for="firstName" class="form-label">Имя тренера</label>
+                        <input disabled type="text" class="form-control" id="firstName" placeholder="" value="@Model.Coach.FirstName" required="">
+
+                    </div>
+
+                    <div class="col-sm-6">
+                        <label for="lastName" class="form-label">Фамилия тренера</label>
+                        <input disabled type="text" class="form-control" id="lastName" placeholder="" value="@Model.Coach.LastName" required="">
+
+                    </div>
+
+                    <div class="col-12">
+                        <label for="username" class="form-label">Спорт</label>
+                        <div class="input-group">
+
+                            <input disabled type="text" class="form-control" id="sportname" placeholder="Спорт" required="" value="@Model.Sports.Name">
+
+                        </div>
+                    </div>
+
+
+                    <div class="col-12">
+                        <label for="hall" class="form-label">Зал</label>
+                        <input disabled type="text" class="form-control" id="hallname" placeholder="Зал" value="@Model.Hall.Name">
+
+                    </div>
+
+
+                    <div class="col-6">
+                        <label class="form-label">Дата</label>
+                        <input disabled type="text" class="form-control" id="date" placeholder="Дата" value="@Model.Date.ToShortDateString()" required="">
+
+                    </div>
+                    <div class="col-6">
+                        <label class="form-label">Время</label>
+                        <input disabled type="text" class="form-control" id="date" placeholder="Время" value="@Model.StartTime.ToString("hh\\:mm")" required="">
+
+                    </div>
+
+                    <div class="col-12">
+                        <label for="address2" class="form-label">Свободно мест </label>
+                        <input disabled type="text" class="form-control" id="place" placeholder="place" value="@(Model.Hall.CountPeople-Model.ReservedPlace)/@Model.Hall.CountPeople">
+                    </div>
+
+
+                    <div class="col-md-7">
+                        <label class="form-label">Опыт</label>
+                        <input disabled type="text" class="form-control" id="expirance" placeholder="" value="@Model.Experience" required="">
+
+                    </div>
+                </div>
+
+
+
+                <hr class="my-4">
+
+                <button id="myButton" class="btn btn-primary btn-lg btn-block" type="button">Отменить</button>
+
+                <br />
+                <br />
+            </div>
+
+        </div>
+    </form>
+</div>
+@section scripts {
+    <script>
+         $('#myButton').on('click', function () {
+            
+            var idRaspis = @Model.Id;
+             alert(idRaspis)
+
+            $.ajax({
+
+                url: '/ClassGroup/RemoveGroupClass', // Replace Controller/Action with the actual controller and action name
+                type: 'POST',
+                data: { idRaspis: idRaspis},
+                success: function (response) {
+                   
+                    status.text(response);
+
+
+                },
+                error: function (xhr) {
+                    // Handle error if any
+                    status.text(xhr);
+                }
+            });
+
+        });
+        //$(document).ready(function () {
+        //    $('#status').change(function () {
+        //        var selectedValue = $(this).val();
+
+        //        // Send AJAX request to the controller
+        //        $.ajax({
+        //            url: '/ClassGroup/checkUser',
+        //            type: 'POST',
+        //            data: { Check: selectedValue },
+        //            success: function (result) {
+        //                // Update the second list with the retrieved data
+        //                window.location.href = '/ClassGroup/UserCheckGroup?Filter=' + selectedValue + '';
+
+
+        //            },
+        //            error: function (xhr, status, error) {
+        //                alert('Error:', error);
+        //            }
+        //        });
+        //    });
+        //});
+
+    </script>
+}
+
+

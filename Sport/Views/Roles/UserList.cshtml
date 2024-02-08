@@ -1,0 +1,16 @@
+﻿@model IEnumerable<Sport.Models.User>
+@{
+    Layout = "~/Views/Shared/_Menu.cshtml";
+}
+<h2>Список пользователей</h2>
+<table class="table">
+    @foreach (var user in Model)
+    {
+        <tr>
+            <td>@user.Email - @user</td>
+            <td>
+                <a class="btn btn-sm btn-primary" asp-action="Edit" asp-route-userid="@user.Id">Права доступа</a>
+            </td>
+        </tr>
+    }
+</table>

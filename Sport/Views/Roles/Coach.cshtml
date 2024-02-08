@@ -1,0 +1,15 @@
+﻿@{
+    Layout = "~/Views/Shared/_Menu.cshtml";
+}
+<h2>Список тренеров</h2>
+<table class="table">
+    @foreach (var user in ViewBag.coach)
+    {
+        <tr>
+            <td>@user.Email </td>
+            <td>
+                <a class="btn btn-sm btn-primary" asp-action="EditCoach" asp-route-userid="@user.Id">Изменить</a>
+            </td>
+        </tr>
+    }
+</table>

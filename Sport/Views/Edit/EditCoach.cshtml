@@ -1,0 +1,14 @@
+﻿@model IEnumerable<Sport.Models.Coach>
+
+<h2>Список тренеров</h2>
+<table class="table">
+    @foreach (var coach in Model)
+    {
+        <tr>
+            <td>@coach.User.Email</td>
+            <td>
+                <a class="btn btn-sm btn-primary" >Права доступа</a>
+            </td>
+        </tr>
+    }
+</table>

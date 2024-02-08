@@ -1,0 +1,171 @@
+﻿@{
+    Layout = "~/Views/Shared/_Menu.cshtml";
+}
+<br />
+
+<h3 align="center">Ваши занятия</h3>
+<br />
+<h4>Фильтр: @ViewBag.Filter</h4>
+<div class="d-flex align-items-start w-25">
+
+    <select class="form-control" aria-label="Default select example" name="Filter" id="Filter">
+
+        <option value="">Выберите фильтр</option>
+        <option value="Все">Все</option>
+        <option value="Ожидание">Ожидание</option>
+        <option value="Отменённое">Отменённое</option>
+        <option value="Принятое">Принятое</option>
+        <option value="Прошедшие">Прошедшие</option>
+    </select>
+    <br />
+
+</div>
+<br />
+@if (ViewBag.rasspis.Count == 0)
+{
+    <h3 style="color:gray; text-align:center;">Не найдено(</h3>
+}
+
+@foreach (var raspis in ViewBag.rasspis)
+{
+    if (@raspis.RaspisIndividual.Status1 == Status1.Over)
+    {
+        <div class="card" >
+
+
+
+
+
+
+            <!-- Изображение -->
+            <img height="300" width="300" src="@raspis.RaspisIndividual.Coach.Image" alt="...">
+            <!-- Текстовый контент -->
+
+            <div class="card-body">
+                <h4 class="card-title">Занятие <a>@raspis.RaspisIndividual.Id</a></h4>
+            </div>
+            <!-- Список List groups -->
+            <ul class="list-group list-group-flush">
+                <li class="list-group-item">Время: <a>@raspis.RaspisIndividual.Time</a></li>
+                <li class="list-group-item">Дата: <a>@raspis.RaspisIndividual.Date.ToShortDateString()</a></li>
+                <li class="list-group-item">Зал: <a>@raspis.RaspisIndividual.Hall.Name</a></li>
+                <li class="list-group-item">Тренер: <a>@raspis.RaspisIndividual.Coach.FirstName @raspis.RaspisIndividual.Coach.LastName</a></li>
+
+
+            </ul>
+            <!-- Текстовый контент -->
+            <div class="card-body">
+                @*@if (raspis.Status == Status.Good)
+                {
+                    <i class="bi bi-patch-check-fill text-success"></i>
+                    <a id="status" class=" text-success">@raspis.Status</a>
+
+                }
+                @if (raspis.Status == Status.Wait)
+                {
+                    <i class="bi bi-patch-question-fill text-warning"></i>
+                    <a id="status" class=" text-warning">@raspis.Status</a>
+
+                }
+                @if (raspis.Status == Status.Cancel)
+                {
+                    <i class="bi bi-patch-minus-fill  text-danger"></i>
+                    <a id="status" class=" text-danger">@raspis.Status</a>
+
+                }*@
+                @if (@raspis.RaspisIndividual.Status1 == Status1.Over)
+                {
+                    <a class="text-danger">Закончиось</a>
+                }
+
+
+
+
+            </div>
+
+        </div><!-- Конец карточки -->
+    }
+    else
+    {
+        <div class="card">
+
+
+
+
+
+
+            <!-- Изображение -->
+            <img height="300" width="300" src="@raspis.RaspisIndividual.Coach.Image" alt="...">
+            <!-- Текстовый контент -->
+
+            <div class="card-body">
+                <h4 class="card-title">Занятие <a>@raspis.RaspisIndividual.Id</a></h4>
+            </div>
+            <!-- Список List groups -->
+            <ul class="list-group list-group-flush">
+                <li class="list-group-item">Время: <a>@raspis.RaspisIndividual.Time</a></li>
+                <li class="list-group-item">Дата: <a>@raspis.RaspisIndividual.Date.ToShortDateString()</a></li>
+                <li class="list-group-item">Зал: <a>@raspis.RaspisIndividual.Hall.Name</a></li>
+                <li class="list-group-item">Тренер: <a>@raspis.RaspisIndividual.Coach.FirstName @raspis.RaspisIndividual.Coach.LastName</a></li>
+
+
+            </ul>
+            <!-- Текстовый контент -->
+            <div class="card-body">
+                @if (raspis.Status == Status.Good)
+                {
+                    <i class="bi bi-patch-check-fill text-success"></i>
+                    <a id="status" class=" text-success">@raspis.Status</a>
+
+                }
+                @if (raspis.Status == Status.Wait)
+                {
+                    <i class="bi bi-patch-question-fill text-warning"></i>
+                    <a id="status" class=" text-warning">@raspis.Status</a>
+
+                }
+                @if (raspis.Status == Status.Cancel)
+                {
+                    <i class="bi bi-patch-minus-fill  text-danger"></i>
+                    <a id="status" class=" text-danger">@raspis.Status</a>
+
+                }
+
+
+
+
+
+            </div>
+
+        </div><!-- Конец карточки -->
+    }
+    <br />
+    <br />
+}
+
+@section scripts {
+    <script>
+        $(document).ready(function () {
+            $('#Filter').change(function () {
+                var selectedValue = $(this).val();
+
+                // Send AJAX request to the controller
+                $.ajax({
+                    url: '/ClassInd/StatusFilterIndUser',
+                    type: 'POST',
+                    data: { Filter: selectedValue },
+                    success: function (result) {
+                        // Update the second list with the retrieved data
+                        window.location.href = '/ClassInd/CheckInd?Filter=' + selectedValue + '';
+
+
+                    },
+                    error: function (xhr, status, error) {
+                        alert('Error:', error);
+                    }
+                });
+            });
+        });
+
+    </script>
+}

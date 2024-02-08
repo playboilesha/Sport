@@ -1,0 +1,22 @@
+﻿@model IEnumerable<Sport.Models.Hall>
+@{
+    Layout = "~/Views/Shared/_Menu.cshtml";
+   
+}
+@foreach (var item in Model)
+{
+    <hr />
+    <h2>@item.Name</h2>
+    <p>
+        <img src="@item.Image" width="300" height="350" class="leftimg">
+        @item.About
+        <br />
+        <a>Вместительность:  @item.CountPeople человек</a>
+        <br />
+        
+
+
+    </p>
+   
+}
+<hr />

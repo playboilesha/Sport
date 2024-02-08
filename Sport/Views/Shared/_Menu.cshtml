@@ -1,0 +1,634 @@
+﻿@using Microsoft.AspNetCore.Http
+@using System.Security.Claims
+@{
+    var user = ViewContext.HttpContext.User;
+    var role = user.FindFirst(ClaimTypes.Role)?.Value;
+}
+<!DOCTYPE html>
+@if (User.Identity.IsAuthenticated)
+{
+    @if (role == "admin")
+    {
+
+        <html lang="en">
+        <head>
+            <meta charset="utf-8" />
+            <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+            <title>@ViewData["Title"] - Sport</title>
+            <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
+
+            <link rel="stylesheet" href="https://unicons.iconscout.com/release/v2.1.9/css/unicons.css">
+            <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.5.0/css/bootstrap.min.css">
+            <link rel="stylesheet" href="/css/menuUser.css">
+            <link rel="stylesheet" href="/css/Coach.css">
+            <link rel="stylesheet" href="~/css/CommentCard.css" />
+            <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+            <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.8.1/font/bootstrap-icons.css">
+
+
+            <script src="/js/menu.js" defer></script>
+
+
+
+
+
+        </head>
+        <body>
+            <div class="navbar">
+                <div class="logo">
+                    @if (User.Identity.IsAuthenticated)
+                    {
+                   
+                        <div>
+
+                            <a class="btn btn-secondary" style=" margin-right:30px;">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-person-circle" viewBox="0 0 16 16">
+                                    <path d="M11 6a3 3 0 1 1-6 0 3 3 0 0 1 6 0z"></path>
+                                    <path fill-rule="evenodd" d="M0 8a8 8 0 1 1 16 0A8 8 0 0 1 0 8zm8-7a7 7 0 0 0-5.468 11.37C3.242 11.226 4.805 10 8 10s4.757 1.225 5.468 2.37A7 7 0 0 0 8 1z"></path>
+                                </svg>
+                                @User.Identity.Name
+                            </a>
+
+
+                        </div>
+                    }
+                </div>
+
+                <ul class="links">
+                    <li><a style="@("/Home/MainAdmin" == @Url.Action() ? "border-bottom: 1px dashed white;" : "")" href="/Home/MainAdmin">Главная</a></li>
+                    <li class="dropdown">
+
+                        <a style="@("/Sports/Skate" == @Url.Action() || "/Sports/Fitness" == @Url.Action() || "/Sports/Box" == @Url.Action() ? "border-bottom: 1px dashed white;" : "" )" href="">Cпорт  </a>
+                        <div class="dropdown-content">
+                            <a asp-controller="Sports" asp-action="Skate">Скейт</a>
+                            <a asp-controller="Sports" asp-action="Fitness">Фитнесс</a>
+                            <a asp-controller="Sports" asp-action="Box">Бокс</a>
+                        </div>
+
+                    </li>
+                    <li class="dropdown">
+
+                        <a style="@("/Roles/Index" == @Url.Action() || "/Roles/UserList" == @Url.Action() ? "border-bottom: 1px dashed white;" : "" )" href="">Роли </a>
+                        <div class="dropdown-content2">
+                            <a asp-controller="Roles" asp-action="Index">Список ролей</a>
+                            <a asp-controller="Roles" asp-action="UserList">Список пользователей</a>
+                        </div>
+
+                    </li>
+                    <li class="dropdown">
+
+                        <a style="@("/About/About" == Url.Action() || "/About/EditAbout" == Url.Action() ? "border-bottom: 1px dashed white;" : "" )" href="">О нас </a>
+                        <div class="dropdown-content2">
+                            <a href="/About/About">Просмотр</a>
+                            <a href="/About/EditAbout">Изменение</a>
+                        </div>
+
+                    </li>
+                    <li>
+
+                        <a style="@("/Roles/Coach" == @Url.Action() ? "border-bottom: 1px dashed white;" : "" )" asp-controller="Roles" asp-action="Coach">
+
+                            Изменение тренера
+                        </a>
+
+
+                    </li>
+                    <li><a style="@("/Coach/Coach" == Url.Action() ? "border-bottom: 1px dashed white;" : "" )" asp-controller="Coach" asp-action="Coach">Тренера</a></li>
+                    <li><a style="@("/Hall/Hall" == Url.Action() ? "border-bottom: 1px dashed white;" : "" )" asp-controller="Hall" asp-action="Hall">Залы</a></li>
+                   
+                </ul>
+                <div class="right">
+                    @if (User.Identity.IsAuthenticated)
+                    {
+                        <div>
+                            <form method="post" asp-controller="Account" asp-action="Main">
+                                <button class="btn btn-outline-success" type="submit">Выйти</button>
+                            </form>
+                        </div>
+                    }
+                </div>
+
+                <div class="toggle">
+                    <div class="line1"></div>
+                    <div class="line2"></div>
+                    <div class="line3"></div>
+                </div>
+            </div>
+
+
+            @*<nav class="menu">
+
+                    <ul>
+                        <li><a href="/Home/MainUser">Главная</a></li>
+                        <li><a asp-controller="Coach" asp-action="Coach">Тренера</a></li>
+                        <li class="dropdown">
+                            <a class="dropbtn" href="">Роли</a>
+                            <div class="dropdown-content">
+                                <a asp-controller="Roles" asp-action="Index">Список ролей</a>
+                                <a asp-controller="Roles" asp-action="UserList">Список пользователей</a>
+                            </div>
+                        </li>
+
+
+                        <li><a asp-controller="Roles" asp-action="Coach">Изменение тренера</a></li>
+                        <li><a asp-controller="Hall" asp-action="Hall">Залы</a></li>
+                        <li><a href="/About/About">О нас</a></li>
+                        @if (User.Identity.IsAuthenticated)
+                        {
+                            <li>
+                                <div class="username-line1">
+                                    <form method="post" asp-controller="Account" asp-action="Main">
+                                        <p>админ: <span id="username">@User.Identity.Name</span></p>
+                                    </form>
+                                </div>
+                            </li>
+                            <li>
+                                <div class="username-line">
+                                    <form method="post" asp-controller="Account" asp-action="Main">
+                                        <input type="submit" href="" value="Выйти" class="double-border-button" />
+                                    </form>
+
+
+                                </div>
+                            </li>
+                        }
+
+                    </ul>
+
+
+                </nav>*@
+
+
+            <div class="container">
+                <main role="main" class="pb-3">
+                    @RenderBody()
+                </main>
+            </div>
+
+            <script src="~/lib/jquery/dist/jquery.min.js"></script>
+            <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
+            <script src="~/js/site.js" asp-append-version="true"></script>
+            @RenderSection("Scripts", required: false)
+        </body>
+    </html>
+}
+
+    @if (role == "coach")
+    {
+
+        <html lang="en">
+        <head>
+            <meta charset="utf-8" />
+            <meta name="viewport" content="width=device-width, initial-scale=1.0">
+            <title>@ViewData["Title"] - Sport</title>
+            @*<link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />*@
+
+            <link rel="stylesheet" href="https://unicons.iconscout.com/release/v2.1.9/css/unicons.css">
+            <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.5.0/css/bootstrap.min.css">
+
+
+            <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.8.1/font/bootstrap-icons.css">
+
+
+
+
+
+
+            <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
+            <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM" crossorigin="anonymous"></script>
+
+
+            <link rel="stylesheet" href="/css/Coach.css">
+            <link rel="stylesheet" href="~/css/CommentCard.css" />
+            <link rel="stylesheet" href="~/css/HallStyle.css" />
+            <link rel="stylesheet" href="~/css/menuUser.css" />
+
+            <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
+            <link href="https://fonts.googleapis.com/css?family=Play&display=swap" rel="stylesheet">
+            <script src="/js/menu.js" defer></script>
+
+
+
+        </head>
+        <body>
+            <div class="navbar">
+                <div class="logo">
+                    @if (User.Identity.IsAuthenticated)
+                    {
+                        <div>
+                            <form method="get" asp-controller="Account" asp-action="AboutCoach">
+                                <button type="submit" class="btn btn-secondary" style=" margin-right:30px;">
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-person-circle" viewBox="0 0 16 16">
+                                        <path d="M11 6a3 3 0 1 1-6 0 3 3 0 0 1 6 0z"></path>
+                                        <path fill-rule="evenodd" d="M0 8a8 8 0 1 1 16 0A8 8 0 0 1 0 8zm8-7a7 7 0 0 0-5.468 11.37C3.242 11.226 4.805 10 8 10s4.757 1.225 5.468 2.37A7 7 0 0 0 8 1z"></path>
+                                    </svg>
+                                    @User.Identity.Name
+                                </button>
+                            </form>
+
+                        </div>
+                    }
+                </div>
+
+                <ul class="links">
+                    <li><a style="@("/Home/MainAdmin" == @Url.Action() ? "border-bottom: 1px dashed white;" : "")" href="/Home/MainAdmin">Главная</a></li>
+                    <li class="dropdown">
+
+                        <a style="@("/Sports/Skate" == @Url.Action() || "/Sports/Fitness" == @Url.Action() || "/Sports/Box" == @Url.Action() ? "border-bottom: 1px dashed white;" : "" )" href="">Cпорт  </a>
+                        <div class="dropdown-content">
+                            <a asp-controller="Sports" asp-action="Skate">Скейт</a>
+                            <a asp-controller="Sports" asp-action="Fitness">Фитнесс</a>
+                            <a asp-controller="Sports" asp-action="Box">Бокс</a>
+                        </div>
+
+                    </li>
+                    <li class="dropdown">
+
+                        <a style="@("/ClassInd/AddClassesInd" == Url.Action() || "/ClassInd/SelectClassesInd" == Url.Action() ? "border-bottom: 1px dashed white;" : "" )" >Индивидуалные занятия  </a>
+                        <div class="dropdown-content2">
+                            <a asp-controller="ClassInd" asp-action="AddClassesInd">Добавить занятие</a>
+                            <a asp-controller="ClassInd" asp-action="SelectClassesInd">Просмотр занятий</a>
+                        </div>
+
+                    </li>
+                    <li class="dropdown">
+
+                        <a style="@("/ClassGroup/AddGroupClass" == Url.Action() || "/ClassGroup/CheckGroupClassRaspis" == Url.Action() ? "border-bottom: 1px dashed white;" : "" )">
+                            Групповые занятия
+                        </a>
+                        <div class="dropdown-content2">
+
+                            <a asp-controller="ClassGroup" asp-action="AddGroupClass">Добавить</a>
+                            <a asp-controller="ClassGroup" asp-action="CheckGroupClassRaspis">Рассписание</a>
+                        </div>
+
+                    </li>
+                    <li><a style="@("/Coach/Coach" == Url.Action() ? "border-bottom: 1px dashed white;" : "" )" asp-controller="Coach" asp-action="Coach">Тренера</a></li>
+                    <li><a style="@("/Hall/Hall" == Url.Action() ? "border-bottom: 1px dashed white;" : "" )" asp-controller="Hall" asp-action="Hall">Залы</a></li>
+                    <li><a style="@("/About/About" == Url.Action() ? "border-bottom: 1px dashed white;" : "" )" href="/About/About">О нас</a></li>
+                </ul>
+                <div class="right">
+                    @if (User.Identity.IsAuthenticated)
+                    {
+                        <div>
+                            <form method="post" asp-controller="Account" asp-action="Main">
+                                <button class="btn btn-outline-success" type="submit">Выйти</button>
+                            </form>
+                        </div>
+                    }
+                </div>
+
+                <div class="toggle">
+                    <div class="line1"></div>
+                    <div class="line2"></div>
+                    <div class="line3"></div>
+                </div>
+            </div>
+
+
+            @*<header>
+                            <div class="d-flex justify-content-between">
+                                <div>
+                                    <a href="" class="logo">Лого</a>
+                                </div>
+                                    @if (User.Identity.IsAuthenticated)
+                                    {
+                                        <div>
+                                            <form method="get" asp-controller="Account" asp-action="About">
+                                                <button type="submit" class="btn btn-secondary" style=" margin-right:30px;">
+                                                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-person-circle" viewBox="0 0 16 16">
+                                                        <path d="M11 6a3 3 0 1 1-6 0 3 3 0 0 1 6 0z"></path>
+                                                        <path fill-rule="evenodd" d="M0 8a8 8 0 1 1 16 0A8 8 0 0 1 0 8zm8-7a7 7 0 0 0-5.468 11.37C3.242 11.226 4.805 10 8 10s4.757 1.225 5.468 2.37A7 7 0 0 0 8 1z"></path>
+                                                    </svg>
+                                                    @User.Identity.Name
+                                                </button>
+                                            </form>
+                                        </div>
+
+
+                                        <div>
+                                            <form method="post" asp-controller="Account" asp-action="Main">
+                                                <button class="btn btn-outline-success" type="submit">Выйти</button>
+                                            </form>
+                                        </div>
+                                            }
+
+                                        </div>
+                                        <nav>
+                                            <ul class="topmenu">
+                                                <li><a href="/Home/MainUser">Главная</a></li>
+                                                <li>
+                                                    <a href="" class="submenu-link">Спорт</a>
+                                                    <ul class="submenu">
+                                                        <li><a asp-controller="Sports" asp-action="Skate">Скейт</a></li>
+                                                        <li><a asp-controller="Sports" asp-action="Fitness">Фитнес</a></li>
+                                                        <li><a asp-controller="Sports" asp-action="Box">Бокс</a></li>
+                                                    </ul>
+                                                </li>
+                                                <li>
+                                                    <a class="submenu-link" asp-controller="ClassInd" asp-action="ClassInd">Индивидуалные занятия</a>
+                                                    <ul class="submenu">
+                                                        <li><a asp-controller="ClassInd" asp-action="AddClassesInd">Добавить занятие</a></li>
+                                                        <li><a asp-controller="ClassInd" asp-action="SelectClassesInd">Просмотр занятий</a></li>
+
+                                                    </ul>
+                                                </li>
+                                                <li>
+                                                    <a class="submenu-link" asp-controller="ClassInd" asp-action="ClassInd">Групповые занятия</a>
+                                                    <ul class="submenu">
+                                                        <li><a asp-controller="ClassGroup" asp-action="AddGroupClass">Добавить</a></li>
+                                                        <li><a asp-controller="ClassGroup" asp-action="CheckGroupClassRaspis">Рассписание</a></li>
+
+                                                    </ul>
+                                                </li>
+                                                <li><a asp-controller="Coach" asp-action="Coach">Тренера</a></li>
+                                                <li><a asp-controller="Hall" asp-action="Hall">Залы</a></li>
+                                                <li><a href="/About/About">О нас</a></li>
+
+                                            </ul>
+                                        </nav>
+                </header>*@
+
+
+            <div class="container">
+                <main role="main" class="pb-3">
+                    @RenderBody()
+                </main>
+            </div>
+
+            <script src="~/lib/jquery/dist/jquery.min.js"></script>
+            <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
+            <script src="~/js/site.js" asp-append-version="true"></script>
+            @RenderSection("Scripts", required: false)
+        </body>
+    </html>
+
+}
+    @if (role == "user")
+    {
+
+        <html lang="en">
+        <head>
+            <meta charset="utf-8" />
+            <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+            <title>@ViewData["Title"] - Sport</title>
+            <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
+            <link rel="stylesheet" href="~/css/site.css" />
+            <link rel="stylesheet" href="https://unicons.iconscout.com/release/v2.1.9/css/unicons.css">
+            <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.5.0/css/bootstrap.min.css">
+            <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
+            <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM" crossorigin="anonymous"></script>
+            <link rel="stylesheet" href="/css/menuCoach.css">
+            <link rel="stylesheet" href="/css/menuUser.css">
+            <link rel="stylesheet" href="/css/Coach.css">
+            <link rel="stylesheet" href="~/css/CommentCard.css" />
+            <link rel="stylesheet" href="~/css/HallStyle.css" />
+            <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.8.1/font/bootstrap-icons.css">
+
+            <script src="/js/menu.js" defer></script>
+
+        </head>
+        <body>
+            <div class="navbar">
+                <div class="logo">
+                    @if (User.Identity.IsAuthenticated)
+                    {
+                        <div>
+                            <form method="get" asp-controller="Account" asp-action="About">
+                                <button type="submit" class="btn btn-secondary" style=" margin-right:30px;">
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-person-circle" viewBox="0 0 16 16">
+                                        <path d="M11 6a3 3 0 1 1-6 0 3 3 0 0 1 6 0z"></path>
+                                        <path fill-rule="evenodd" d="M0 8a8 8 0 1 1 16 0A8 8 0 0 1 0 8zm8-7a7 7 0 0 0-5.468 11.37C3.242 11.226 4.805 10 8 10s4.757 1.225 5.468 2.37A7 7 0 0 0 8 1z"></path>
+                                    </svg>
+                                    @User.Identity.Name
+                                </button>
+                            </form>
+
+                        </div>
+                    }
+                </div>
+
+                <ul class="links">
+                    <li><a style="@("/Home/MainAdmin" == @Url.Action() ? "border-bottom: 1px dashed white;" : "")" href="/Home/MainAdmin">Главная</a></li>
+                    <li class="dropdown">
+
+                        <a style="@("/Sports/Skate" == @Url.Action() || "/Sports/Fitness" == @Url.Action() || "/Sports/Box" == @Url.Action() ? "border-bottom: 1px dashed white;" : "" )" href="">Cпорт  </a>
+                        <div class="dropdown-content">
+                            <a asp-controller="Sports" asp-action="Skate">Скейт</a>
+                            <a asp-controller="Sports" asp-action="Fitness">Фитнесс</a>
+                            <a asp-controller="Sports" asp-action="Box">Бокс</a>
+                        </div>
+
+                    </li>
+                    <li class="dropdown">
+
+                        <a style="@("/ClassInd/ClassInd" == Url.Action() || "/ClassInd/CheckInd" == Url.Action() ? "border-bottom: 1px dashed white;" : "" )" asp-controller="ClassInd" asp-action="ClassInd">Индивидуалные занятия  </a>
+                        <div class="dropdown-content2">
+                            <a asp-controller="ClassInd" asp-action="ClassInd">Запись</a>
+                            <a asp-controller="ClassInd" asp-action="CheckInd">Просмотр занятий</a>
+                        </div>
+
+                    </li>
+                    <li class="dropdown">
+
+                        <a style="@("/ClassGroup/CheckGroup" == Url.Action() || "/ClassGroup/UserCheckGroup" == Url.Action() ? "border-bottom: 1px dashed white;" : "")">
+                            Групповые занятия
+                        </a>
+                        <div class="dropdown-content2">
+
+                            <a asp-controller="ClassGroup" asp-action="UserCheckGroup">Мои занятия</a>
+                            <a asp-controller="ClassGroup" asp-action="CheckGroup">Рассписание</a>
+                        </div>
+
+                    </li>
+                    <li><a style="@("/Coach/Coach" == Url.Action() ? "border-bottom: 1px dashed white;" : "" )" asp-controller="Coach" asp-action="Coach">Тренера</a></li>
+                    <li><a style="@("/Hall/Hall" == Url.Action() ? "border-bottom: 1px dashed white;" : "" )" asp-controller="Hall" asp-action="Hall">Залы</a></li>
+                    <li><a style="@("/About/About" == Url.Action() ? "border-bottom: 1px dashed white;" : "" )" href="/About/About">О нас</a></li>
+                </ul>
+                <div class="right">
+                    @if (User.Identity.IsAuthenticated)
+                    {
+                        <div>
+                            <form method="post" asp-controller="Account" asp-action="Main">
+                                <button class="btn btn-outline-success" type="submit">Выйти</button>
+                            </form>
+                        </div>
+                    }
+                </div>
+
+                <div class="toggle">
+                    <div class="line1"></div>
+                    <div class="line2"></div>
+                    <div class="line3"></div>
+                </div>
+            </div>
+
+            @*<nav class="navbar navbar-expand-lg bg-dark navbar-dark">
+                    <div class="container-fluid">
+
+                        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+                            <span class="navbar-toggler-icon"></span>
+                        </button>
+                        <div class="collapse navbar-collapse" id="navbarSupportedContent">
+                            <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+                                <li class="nav-item">
+                                    <a class="@("/Home/MainAdmin" == @Url.Action() ? "nav-link active":"nav-link" )" aria-current="page" href="/Home/MainAdmin">Главная</a>
+                                </li>
+
+                                <li class="nav-item dropdown">
+                                    <a class="@("/Sports/Skate" == @Url.Action() ||"/Sports/Fitness" == @Url.Action()||"/Sports/Box" == @Url.Action() ? "nav-link active":"nav-link" ) dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown">
+                                       Спорт
+                                    </a>
+                                    <ul class="dropdown-menu  ">
+                                        <li><a class="dropdown-item  " asp-controller="Sports" asp-action="Skate">Скейт</a></li>
+                                        <li><a class="dropdown-item " asp-controller="Sports" asp-action="Fitness">Фитнес</a></li>
+                                        <li><a class="dropdown-item " asp-controller="Sports" asp-action="Box">Бокс</a></li>
+                                    </ul>
+                                </li>
+                                <li class="nav-item">
+                                    <a class="@("/Coach/Coach" == Url.Action() ? "nav-link active":"nav-link" )" aria-current="page" asp-controller="Coach" asp-action="Coach">Тренера</a>
+                                </li>
+                                <li class="nav-item">
+                                    <a class="@("/Hall/Hall" == Url.Action() ? "nav-link active":"nav-link" )" aria-current="page" asp-controller="Hall" asp-action="Hall">Залы</a>
+                                </li>
+                                <li class="nav-item dropdown">
+                                    <a class="@("/ClassInd/ClassInd" == Url.Action()||"/ClassInd/CheckInd" == Url.Action() ? "nav-link active":"nav-link" ) dropdown-toggle" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                                        Индивидуалные занятия
+                                    </a>
+                                    <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
+                                        <li><a class="dropdown-item" asp-controller="ClassInd" asp-action="ClassInd">Запись</a></li>
+                                        <li><a class="dropdown-item" asp-controller="ClassInd" asp-action="CheckInd">Просмотр занятий</a></li>
+                                    </ul>
+                                </li>
+                                <li class="nav-item dropdown">
+                                    <a class="@("/ClassGroup/CheckGroup" == Url.Action()||"/ClassGroup/MyGroup" == Url.Action() ? "nav-link active":"nav-link") dropdown-toggle" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                                        Групповые занятия
+                                    </a>
+                                    <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
+                                        <li><a class="dropdown-item">Мои занятия</a></li>
+                                        <li><a class="dropdown-item" asp-controller="ClassGroup" asp-action="CheckGroup">Рассписание</a></li>
+                                    </ul>
+                                </li>
+                                <li class="nav-item">
+                                    <a class="@("/About/About" == Url.Action() ? "nav-link active":"nav-link" )" aria-current="page" href="/About/About">О нас</a>
+                                </li>
+
+                            </ul>
+                            @if (User.Identity.IsAuthenticated)
+                            {
+                                <form method="get" asp-controller="Account" asp-action="About">
+                                    <button type="submit" class="btn btn-secondary" style=" margin-right:30px;">
+                                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-person-circle" viewBox="0 0 16 16">
+                                            <path d="M11 6a3 3 0 1 1-6 0 3 3 0 0 1 6 0z"></path>
+                                            <path fill-rule="evenodd" d="M0 8a8 8 0 1 1 16 0A8 8 0 0 1 0 8zm8-7a7 7 0 0 0-5.468 11.37C3.242 11.226 4.805 10 8 10s4.757 1.225 5.468 2.37A7 7 0 0 0 8 1z"></path>
+                                        </svg>
+                                        @User.Identity.Name
+                                    </button>
+                                    </form>
+
+
+
+
+                                    <form method="post" asp-controller="Account" asp-action="Main">
+                                        <button class="btn btn-outline-success" type="submit">Выйти</button>
+                                    </form>
+                                    }
+                            </div>
+                    </div>
+                </nav>*@
+            <div class="container">
+                <main role="main" class="pb-3">
+                    @RenderBody()
+                </main>
+            </div>
+            <script src="~/lib/jquery/dist/jquery.min.js"></script>
+            <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
+            <script src="~/js/site.js" asp-append-version="true"></script>
+            @RenderSection("Scripts", required: false)
+        </body>
+    </html>
+}
+}
+else
+{
+<html lang="en">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>@ViewData["Title"] - Sport</title>
+    <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
+    <link rel="stylesheet" href="~/css/site.css" />
+    <link rel="stylesheet" href="https://unicons.iconscout.com/release/v2.1.9/css/unicons.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.5.0/css/bootstrap.min.css">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM" crossorigin="anonymous"></script>
+    <link rel="stylesheet" href="/css/menuCoach.css">
+    <link rel="stylesheet" href="/css/menuUser.css">
+    <link rel="stylesheet" href="/css/Coach.css">
+    <link rel="stylesheet" href="~/css/CommentCard.css" />
+    <link rel="stylesheet" href="~/css/HallStyle.css" />
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.8.1/font/bootstrap-icons.css">
+
+    <script src="/js/menu.js" defer></script>
+
+</head>
+<body>
+    <div class="navbar">
+        
+
+        <ul class="links">
+            <li><a style="@("/Home/MainAdmin" == @Url.Action() ? "border-bottom: 1px dashed white;" : "")" href="/Home/MainAdmin">Главная</a></li>
+            <li class="dropdown">
+
+                <a style="@("/Sports/Skate" == @Url.Action() || "/Sports/Fitness" == @Url.Action() || "/Sports/Box" == @Url.Action() ? "border-bottom: 1px dashed white;" : "" )" href="">Cпорт  </a>
+                <div class="dropdown-content">
+                    <a asp-controller="Sports" asp-action="Skate">Скейт</a>
+                    <a asp-controller="Sports" asp-action="Fitness">Фитнесс</a>
+                    <a asp-controller="Sports" asp-action="Box">Бокс</a>
+                </div>
+
+            </li>
+          
+            <li><a style="@("/Coach/Coach" == Url.Action() ? "border-bottom: 1px dashed white;" : "" )" asp-controller="Coach" asp-action="Coach">Тренера</a></li>
+            <li><a style="@("/Hall/Hall" == Url.Action() ? "border-bottom: 1px dashed white;" : "" )" asp-controller="Hall" asp-action="Hall">Залы</a></li>
+            <li><a style="@("/About/About" == Url.Action() ? "border-bottom: 1px dashed white;" : "" )" href="/About/About">О нас</a></li>
+        </ul>
+        <div class="right">
+            @if (User.Identity.IsAuthenticated)
+            {
+                <div>
+                    <form method="post" asp-controller="Account" asp-action="Main">
+                        <button class="btn btn-outline-success" type="submit">Выйти</button>
+                    </form>
+                </div>
+            }
+            else
+            {
+                <div>
+                    <form method="get" asp-controller="Account" asp-action="Login">
+                        <button class="btn btn-outline-success" type="submit">Войти</button>
+                    </form>
+                </div>
+               
+            }
+        </div>
+
+        <div class="toggle">
+            <div class="line1"></div>
+            <div class="line2"></div>
+            <div class="line3"></div>
+        </div>
+    </div>
+
+    <div class="container">
+        <main role="main" class="pb-3">
+            @RenderBody()
+        </main>
+    </div>
+    <script src="~/lib/jquery/dist/jquery.min.js"></script>
+    <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="~/js/site.js" asp-append-version="true"></script>
+    @RenderSection("Scripts", required: false)
+</body>
+</html>
+    }

@@ -1,0 +1,177 @@
+﻿.deck-wrap {
+    overflow: hidden;
+}
+
+.deck {
+    position: relative;
+    max-width: 500px;
+    width: 100%;
+    margin: 40px auto;
+}
+
+    .deck:before {
+        content: "";
+        position: absolute;
+        width: 120%;
+        height: 100%;
+        top: -20px;
+        left: 0;
+        border-radius: 16px;
+        background: #337AB7;
+    }
+
+.card1 {
+    position: relative;
+    background-color: #f1ebff;
+    padding: 10px;
+    z-index: 5;
+    border-radius: 5px;
+   
+    /* сверху | справа | снизу | слева */
+    margin: 20px 7% 10px 40%;
+}
+
+
+
+
+
+
+
+
+.cardHeader {
+    font-size: 15px;
+    color: #337AB7;
+    text-transform: uppercase;
+    padding: 8px 10px;
+    font-family: 'Roboto', sans-serif;
+}
+
+.cardBody {
+    padding: 0 10px;
+}
+
+    .cardBody p {
+        color: #000;
+        font-size: 14px;
+        line-height: 1.5;
+        margin: 0;
+        margin-bottom: 10px;
+        font-family: Verdana, sans-serif;
+    }
+
+.cardFooter {
+    font-family: Verdana, sans-serif;
+    font-size: 13px;
+    text-align: right;
+    line-height: 1.5;
+    margin-bottom: 10px;
+    color: #337AB7;
+    padding: 0 10px;
+}
+
+input.question,
+textarea.question {
+    font-size: 15px;
+    line-height: 24px;
+    font-weight: 200;
+    border-radius: 2px;
+    margin: 0;
+    border: none;
+    width: 50%;
+    background: rgba(0, 0, 0, 0);
+    transition: padding-top 0.2s ease, margin-top 0.2s ease;
+    overflow: hidden; /* Hack to make "rows" attribute apply in Firefox. */
+    height: 40px;
+    color: black;
+}
+/* Underline and Placeholder */
+textarea.question {
+    line-height: 24px;
+    resize: none;
+}
+
+    input.question + label,
+    textarea.question + label {
+        display: block;
+        position: relative;
+        white-space: nowrap;
+        padding: 0;
+        margin: 0;
+        width: 10%;
+       
+        -webkit-transition: width 0.4s ease;
+        transition: width 0.4s ease;
+        height: 0px;
+       
+        
+    }
+.divComment {
+   
+;
+  
+    box-sizing: border-box;
+    /* сверху | справа | снизу | слева */
+    padding: 20px 20px 30px 40px;
+}
+.textareaComm {
+    border-width: 0.4px 0.4px 0.4px 0.4px;
+    border-style: solid solid solid solid;
+    border-color: black black black black;
+}
+hr {
+    clear: both;
+    margin-top: 10px;
+    margin-bottom: 50px;
+    border: 0;
+}
+    input.question:focus + label,
+    textarea.question:focus + label {
+        width: 50%;
+    }
+
+    input.question:focus,
+    input.question:valid,
+    textarea.question:valid,
+    textarea.question:focus {
+        padding-top: -35px;
+        padding-top: -35px;
+    }
+
+        input.question:focus + label > span, textarea.question:focus + label > span,
+        input.question:valid + label > span, textarea.question:valid + label > span {
+            top: -80px;
+            font-size: 15px;
+            color: #ff12b6;
+            text-shadow: 1px 1px 3px rgba(0,0,0,0.3);
+        }
+
+        input.question:valid + label,
+        textarea.question:valid + label {
+            border-color: #1183FF;
+        }
+
+    input.question:invalid,
+    textarea.question:invalid {
+        box-shadow: none;
+    }
+
+    input.question + label > span,
+    textarea.question + label > span {
+        font-weight: 300;
+        margin: 0;
+        position: absolute;
+        color: #baacac;
+        font-size: 20px;
+        top: -35px;
+        left: 0px;
+        z-index: -1;
+        -webkit-transition: top 0.2s ease, font-size 0.2s ease, color 0.2s ease;
+        transition: top 0.2s ease, font-size 0.2s ease, color 0.2s ease;
+    }
+
+
+
+
+
+
+

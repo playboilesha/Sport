@@ -1,0 +1,73 @@
+﻿@{
+    Layout = "~/Views/Shared/_Menu.cshtml";
+}
+<html class="ff">
+<link rel="stylesheet" href="~/css/SportStyle.css" />
+<body class="ff1 page-template page-template-service page-template-service-php page page-id-26 page-parent page-child parent-pageid-15">
+    <main>
+        <section class="main-service" style="background-image: url(@ViewBag.Image) ">
+            <div class="box">
+                <h1 class="head-main-serv">@ViewBag.Name</h1>
+                <p style="color:black;" class="text_after_h1">Плащадка для скейтборда уже открыта</p>
+                <input type="checkbox" name="in_da_club" class="inp" id="in_da_club" />
+                <!-- <label for="in_da_club" class="in_da_club">Вступить в клуб</label> -->
+            </div>
+        </section>
+        <section class="adv-main-serv">
+            <div class="box">
+                <div class="adv_icons_rep">
+                    <img src="https://yestoday.by/wp-content/uploads/2019/07/Занятия-для-всех.svg" alt="занятия yestoday" />
+                    <p>
+                        @ViewBag.NameCharacteristic1
+                    </p>
+                    <p>  @ViewBag.AboutCharacteristic1</p>
+                </div>
+                <div class="adv_icons_rep">
+                    <img src="https://yestoday.by/wp-content/uploads/2019/07/Новейшее-оборудование.svg" alt="новейшие тренажеры" />
+                    <p>
+                        @ViewBag.NameCharacteristic2
+                    </p>
+                    <p>  @ViewBag.AboutCharacteristic2</p>
+                </div>
+                <div class="adv_icons_rep">
+                    <img src="https://yestoday.by/wp-content/uploads/2021/09/Дополнительные-услуги.png" alt="" />
+                    <p>
+                        @ViewBag.NameCharacteristic3
+                    </p>
+                    <p>  @ViewBag.AboutCharacteristic3</p>
+                </div>
+            </div>
+        </section>
+        <section>
+            <div class="box">
+                <h2 class="subtitle-main-serv">Услуги</h2>
+                <p>Совершенствуйтесь с удовольствием, развивайтесь физически так, как еще не делали этого прежде</p>
+
+                <div class="section-content">
+
+                    <div class="mini-serv-line">
+                        <a  class="mini-serv">
+                            <img src="https://yestoday.by/wp-content/uploads/2019/07/Индивид-занятия-фитнес.svg" class="attachment-post-thumbnail size-post-thumbnail wp-post-image" alt="индивидуальные занятия фитнес" loading="lazy" height="512" width="512" />                  <span class="mini-title">Индивидуальные занятия</span>
+                            <span class="mini-short-des">Занятия с личным тренером в тренажерном зале – путь к здоровью и красоте Вашего тела</span>
+                        </a>
+                        <a  class="mini-serv">
+                            <img width="512" height="512" src="https://yestoday.by/wp-content/uploads/2021/09/Фитнес-тестирование.png" class="attachment-post-thumbnail size-post-thumbnail wp-post-image" alt="" loading="lazy" srcset="https://yestoday.by/wp-content/uploads/2021/09/Фитнес-тестирование.png 512w, https://yestoday.by/wp-content/uploads/2021/09/Фитнес-тестирование-300x300.png 300w, https://yestoday.by/wp-content/uploads/2021/09/Фитнес-тестирование-150x150.png 150w, https://yestoday.by/wp-content/uploads/2021/09/Фитнес-тестирование-75x75.png 75w" sizes="(max-width: 512px) 100vw, 512px" />                  <span class="mini-title">Групповые занятия</span>
+                            <span class="mini-short-des">Два просторных и уютных зала для групповых фитнес тренировок. Большой выбор направлений - каждый найдет занятие по душе.</span>
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </section>
+        <br />
+        <div class="box">
+            <p>
+                @ViewBag.About
+            </p>
+        </div>
+        <br />
+        <br />
+
+
+    </main>
+</body>
+</html>

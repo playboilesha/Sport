@@ -1,0 +1,98 @@
+﻿@{
+    Layout = "~/Views/Shared/_Menu.cshtml";
+}
+@model Sport.Models.RaspisIndividual
+
+   
+
+    <div class="container">
+        <div class="row">
+            <div class="mr-auto ml-auto w-50 p-3   bg-light">
+                <div class="text-center">
+                    <a><strong> Добавление индивидульного занятия</strong></a>
+                    </div>
+                    <br />
+
+                    <form method="post" asp-controller="ClassInd" asp-route-CoachName="@User.Identity.Name" asp-action="AddClassesInd">
+
+                        <p><strong>Зал</strong></p>
+
+                        <select class="form-control" aria-label="Default select example" name="selectedValue" id="selectedValue">
+                            
+                            @foreach (var h in ViewBag.halls)
+                            {
+                                <option value="@h.Id">@h.Name </option>
+
+                            }
+                        </select>
+
+                        <br />
+                        <label class="form-label"><strong>Дата: </strong></label>
+                        <br />
+                        <input class="form-control" type="date" name="date" id="calendarDate" />
+
+                        <br />
+                        <label class="form-label"><strong>Время:</strong> </label>
+                        <br />
+                        <select name="time" aria-label="Default select example" id="time" class="form-control">
+                            
+                            <option value="9:00">9:00</option>
+                            <option value="10:00">10:00</option>
+                            <option value="11:00">11:00</option>
+                            <option value="12:00">12:00</option>
+                            <option value="13:00">13:00</option>
+                            <option value="14:00">14:00</option>
+                            <option value="15:00">15:00</option>
+                            <option value="16:00">16:00</option>
+                            <option value="17:00">17:00</option>
+                            <option value="18:00">18:00</option>
+
+                        </select>
+                        @*<input type="time" asp-for="Time" value="10:00" id="time" max="20:00" min="10:00" />*@
+
+
+                        <br />
+                        <button class="btn btn-lg btn-primary btn-block" type="submit">Отправить</button>
+                        <br />
+                        <a style="color:red;">@ViewBag.Status</a>
+                    </form>
+                    <br />
+
+                    <br />
+                </div>
+            </div>
+        </div>
+                <h2>Ваше рассписание</h2>
+                <br />
+                <table>
+                    <tr>
+                        <th>Date</th>
+                        <th>Time</th>
+                        <th>Hall</th>
+                        <th>Status</th>
+                    </tr>
+                    @foreach (var raspis in ViewBag.raspisIndividual)
+                    {
+
+
+                        <tr>
+
+                            <td>@raspis.Date.ToShortDateString()</td>
+
+                            <td>@raspis.Time</td>
+                            <td>@raspis.Hall.Name</td>
+                            <td>@raspis.Status1</td>
+                        </tr>
+                    }
+
+
+
+                </table>
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+

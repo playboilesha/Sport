@@ -1,0 +1,121 @@
+﻿@{
+    Layout = "~/Views/Shared/_Menu.cshtml";
+}
+@model Sport.Models.GroupClassesRaspis
+
+<div class="container">
+    <div class="py-5 text-center">
+      
+        <h1 id="sport1" class="h3">@Model.Sports.Name</h1>
+
+        <h5>@Model.Date.ToString("dddd, MMM dd")</h5>
+
+        <h5>Начало: @Model.StartTime.ToString("hh\\:mm") (@((Model.EndTime - Model.StartTime).Hours) час)</h5>
+
+        <a>Зал @Model.Hall.Name</a>
+        <br />
+
+        <a>Занятие для уровня: @Model.Experience</a>
+    </div>
+    <hr class="my-4">
+    <div class="row">
+        <div class="mr-auto ml-auto w-50 p-3  text-center bg-light">
+
+
+
+            <label>Свободно мест @(Model.Hall.CountPeople-Model.ReservedPlace) из @Model.Hall.CountPeople</label>
+
+            <h4>ЗАПИСЬ</h4>
+
+
+            @if (ViewBag.Expirance.ToString() == "null")
+            {
+
+                <br />
+                <label class="labels">Опыт</label>
+                <br />
+                <select class="form-select" id="exp" name="exp">
+
+
+
+
+                    <option value="@Experience.low">Low</option>
+                    <option value="@Experience.average">Avarage</option>
+                    <option value="@Experience.high">High</option>
+
+                </select>
+
+
+                <br>
+                <label class="labels">О вашем опыте</label><br /><textarea id="aboutexpirance" type="text" class="form-control" placeholder="Expirance details" value=""></textarea>
+
+            }
+            else
+            {
+
+                <label for="hall" class="form-label">Опыт</label>
+                <br />
+                <input disabled type="text" class="form-control" id="exp" placeholder="Зал" value="@ViewBag.Expirance">
+                <br />
+                <label class="labels">О вашем опыте</label><br /><textarea disabled id="aboutexpirance" type="text" class="form-control" placeholder="Expirance details" value="">@ViewBag.About</textarea>
+            }
+            <br />
+
+
+
+            <hr class="my-4">
+
+            <button class="btn btn-primary btn-lg " id="muButton" type="button">Записаться</button>
+            <br />
+            <a id="status" style="color:red;"></a>
+        </div>
+            </div>
+        </div>
+                <hr class="my-4">
+
+                <div class="py-5 text-center ">
+                    <h3>Тренер</h3>
+                </div>
+               
+                    <div class="mr-auto ml-auto w-75 p-3 card" style="width: 40rem;">
+                        <img class="card-img-top" src="@Model.Coach.Image" alt="Card image cap">
+                        <div class="card-body">
+                            <h5 class="card-title">@Model.Coach.FirstName @Model.Coach.LastName</h5>
+                            <p class="card-text">@Model.Coach.About @Model.Coach.Age лет</p>
+                            <a asp-controller="Coach" asp-action="CoachPage" asp-route-userId="@Model.Coach.Id" class="btn btn-primary">К тренеру</a>
+                        </div>
+                    </div>
+              
+
+
+           
+@section scripts {
+    <script>
+        $('#muButton').on('click', function () {
+            var exp = $('#exp').val();
+            var aboutexp = $('#aboutexpirance').val();
+            var idGroup = @Model.Id;
+            var idSport = @Model.Sports.Id;
+            
+
+            $.ajax({
+
+                url: '/ClassGroup/BookingStudent', // Replace Controller/Action with the actual controller and action name
+                type: 'POST',
+                data: { exp: exp, about: aboutexp, idGroup: idGroup, idSport: idSport},
+                success: function (response) {
+                    var status = $('#status');
+                    // Display response in a pop-up window
+                    status.text(response);
+
+
+                },
+                error: function (xhr) {
+                    // Handle error if any
+                    status.text(xhr);
+                }
+            });
+
+        });
+        </script>
+}

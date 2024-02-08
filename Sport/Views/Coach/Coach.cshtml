@@ -1,0 +1,27 @@
+﻿@model IEnumerable<Sport.Models.Coach>
+@{
+    Layout = "~/Views/Shared/_Menu.cshtml";
+}
+
+    <ul class="cards">
+        @foreach (var item in Model)
+        {
+            <li class="cards__item">
+                <div class="card">
+                    <img class="card__image card__image--fence" src="@item.Image" />
+
+
+                    <div class="card__content">
+                        <div class="card__title">@item.FirstName @item.LastName</div>
+                        <p class="card__text">@item.Age years old @item.About</p>
+                        <a>Специальность: </a><p>@item.Speciality</p>
+                        <a class="Specciality" asp-controller="Coach" asp-action="CoachPage" asp-route-userId="@item.Id">more...</a>
+                    </div>
+                </div>
+            </li>
+        }
+
+    </ul>
+    
+
+

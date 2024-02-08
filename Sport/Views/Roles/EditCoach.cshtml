@@ -1,0 +1,149 @@
+﻿@{
+    Layout = "~/Views/Shared/_Menu.cshtml";
+}
+@model Sport.Models.Coach
+<style>
+
+
+
+
+    body {
+        background: #2a2a2b;
+    }
+
+
+
+    .inputWithIcon {
+        position: relative;
+    }
+
+        .inputWithIcon i {
+            position: absolute;
+            right: 0;
+            top: -3px;
+            padding: 14px 13px;
+            transition: 0.3s;
+        }
+
+
+
+
+    input[type ="text"]::-webkit-input-placeholder {
+        color: grey;
+    }
+
+    input[type ="text"] {
+        color: black;
+    }
+
+    textarea[type ="text"] {
+        color: black;
+    }
+</style>
+<div class="container rounded bg-white mt-5 mb-5">
+    <div class="row">
+        <div class="col-md-3 border-right">
+            <div class="d-flex flex-column align-items-center text-center p-3 py-5"><img class="rounded-circle mt-5"  width="150px" src="@Model.Image"><span class="font-weight-bold">@Model.User.UserName</span>@Model.User.Email<span class="text-black-50"></span><input  id="img" type="text" class="form-control" value="@Model.Image" placeholder="ссылка на фото"><span> </span></div>
+        </div>
+        <div class="col-md-5 border-right">
+            <div class="p-3 py-5">
+                <div class="d-flex justify-content-between align-items-center mb-3">
+                    <h4 class="text-right">Тренер</h4>
+                </div>
+
+                <div class="row mt-2">
+
+                    <div class="col-md-6">
+                        <label class="labels">Имя</label>
+                        <div class="inputWithIcon">
+                            <input id="name" type="text" class="form-control" value="@Model.FirstName" placeholder="имя">
+                            
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <label class="labels">Фамилия</label>
+                        <div class="inputWithIcon">
+                            <input id="lastname" type="text" class="form-control" value="@Model.LastName" placeholder="фамилия">
+                           
+                        </div>
+                    </div>
+                    <div class="col-md-6"><label class="labels">Имя пользователя</label><input disabled id="nameuser" type="text" class="form-control" value="@Model.User.UserName" placeholder="UserName"></div>
+                </div>
+                <div class="row mt-3">
+                    <div class="col-md-12"><label class="labels">Возраст</label><input id="age"  type="text" class="form-control" placeholder="возраст" value="@Model.Age"></div>
+                    <div class="col-md-12"><label class="labels">Почта</label><input disabled type="text" class="form-control" placeholder="Email" value="@Model.User.Email"></div>
+                    <div class="col-md-12"><label class="labels">О тренере</label><textarea id="about" type="text" style="height:150px;" class="form-control" placeholder="напишите о тренере">@Model.About</textarea></div>
+
+
+                    <div class="col-md-12">
+                        <label class="labels">Специальность</label>
+                        <div class="inputWithIcon">
+
+                            <select class="form-select" aria-label="Default select example" id="sport" name="sport">
+
+                                @if (Model.Speciality == Speciality.Skate)
+                                {
+                                    <option selected value="0">@Speciality.Skate</option>
+                                    <option value="1">@Speciality.Fitness</option>
+                                    <option value="2">@Speciality.Box</option>
+                                }
+                                @if (Model.Speciality == Speciality.Fitness)
+                                {
+                                    <option value="0">@Speciality.Skate</option>
+                                    <option selected value="1">@Speciality.Fitness</option>
+                                    <option value="2">@Speciality.Box</option>
+                                }
+                                @if (Model.Speciality == Speciality.Box)
+                                {
+                                    <option value="0">@Speciality.Skate</option>
+                                    <option value="1">@Speciality.Fitness</option>
+                                    <option selected value="2">@Speciality.Box</option>
+                                }
+
+                            </select>
+
+
+                        </div>
+                    </div>
+
+                </div>
+
+                <div class="mt-5 text-center"><button id="updateInfoUser" type="button" class="btn btn-outline-success">Изменить</button></div>
+
+
+                <p id="verificationResult"></p>
+            </div>
+        </div>
+
+    </div>
+</div>
+@section scripts {
+    <script>
+  $('#updateInfoUser').on('click', function () {
+            var namee = $('#name').val();
+            var lastname = $('#lastname').val();
+            var about = $('#about').val();
+      var sport = $('#sport').val();
+      var nameuser = $('#nameuser').val();
+      var img = $('#img').val();
+      var age = $('#age').val();
+            $.ajax({
+
+                url: '/Roles/UpdateInfoCoach', // Replace Controller/Action with the actual controller and action name
+                type: 'POST',
+                data: { name: namee, lastname: lastname, about: about, sport: sport, nameuser: nameuser,img:img,age:age},
+                success: function (response) {
+                    $("#verificationResult").text(response);
+
+
+
+                },
+                error: function (xhr) {
+                    // Handle error if any
+                    $("#verificationResult").text(xhr);
+                }
+            });
+
+  });
+</script>
+}

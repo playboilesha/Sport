@@ -1,0 +1,135 @@
+﻿
+
+@{
+    Layout = "~/Views/Shared/_Menu.cshtml";
+}
+
+
+
+
+    <header class="py-5 bg-image-full" style="background-image: url('https://img.freepik.com/premium-photo/male-boxer-boxing-in-punching-bag_209729-756.jpg')">
+        <div class="text-center my-5">
+
+            <h1 class="text-white fs-3 fw-bolder">Сайт создан специально для спортсменов</h1>
+
+        </div>
+    </header>
+    <!-- Content section-->
+    <br />
+    <br />
+    <br />
+    <br />
+    <h2 align="center">Спорт</h2>
+    <div class="container">
+        <div class="row">
+            <div class="col-sm">
+                <div class="card" style="width: 18rem;">
+                    <img class="card-img-top" src="/hallFitness.jpg" alt="Card image cap">
+                    <div class="card-body">
+                        <a asp-controller="Sports" asp-action="Fitness" class="h5 card-title">Фитнесс</a>
+                        <p class="card-text">Этот спорт довольно легкий вам он понравится!</p>
+                    </div>
+                </div>
+            </div>
+            <div class="col-sm">
+                <div class="card" style="width: 18rem;">
+                    <img class="card-img-top" src="/hallSkate.jpg" alt="Card image cap">
+                    <div class="card-body">
+                        <a asp-controller="Sports" asp-action="Skate"  class="h5 card-title">Скейт</a>
+                        <p class="card-text">Этот спорт очень сложный и известный на весь мир</p>
+                    </div>
+                </div>
+            </div>
+            <div class="col-sm">
+                <div class="card" style="width: 18rem;">
+                    <img class="card-img-top" src="/hallBox.jpeg" alt="Card image cap">
+                    <div class="card-body">
+                        <a asp-controller="Sports" asp-action="Box"  class="h5 card-title">Бокс</a>
+                        <p class="card-text">Этот спорт подходит для мужчин</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <br />
+    <br />
+    <br />
+    <div class="container">
+        <div class="row">
+            <div class="col">
+                <div class="section-title">
+                    <h2>Вычеслите свой <span>ИМТ</span></h2>
+                    <p>Индекс массы тела — величина, позволяющая оценить степень соответствия массы человека и его роста и тем самым косвенно судить о том, является ли масса недостаточной, нормальной или избыточной.</p>
+                </div>
+
+                <div class="row">
+                    <div class="col">
+                        <input type="text" placeholder="Вес (KG)" id="bmi-weight">
+                    </div>
+                    <div class="col">
+                        <input type="text" placeholder="Рост (СM)" id="bmi-hight">
+                    </div>
+                    <div class="col">
+                        <button class="btn btn-primary" type="submit" id="bmi-submit">Calculate</button>
+                    </div>
+                    <div class="col">
+                        <input type="text" id="bmi-result">
+                        <a id="rez"></a>
+                    </div>
+                </div>
+
+
+            </div>
+        </div>
+    </div>
+    <br />
+    <br />
+    <br />
+
+@*else
+{
+    <a asp-controller="Account" asp-action="Login">Вход</a>
+    <a asp-controller="Account" asp-action="Register">Регистрация</a>
+}*@
+@section scripts {
+    <script>
+        $('#bmi-submit').on('click', function () {
+            var bmi_weight = $('#bmi-weight').val();
+            var bmi_hight = $('#bmi-hight').val();
+            var bmi_result = $('#bmi-result');
+            
+          
+
+
+            $.ajax({
+
+                url: '/Home/GetIMT', // Replace Controller/Action with the actual controller and action name
+                type: 'POST',
+                data: { bmi_weight: bmi_weight, bmi_hight: bmi_hight},
+                success: function (response) {
+
+                    
+                                       // Display response in a pop-up window
+                   
+                    if (response.status == "str") {
+                        bmi_result.val("Введите число");
+                        
+                    }
+                    else if (response.status == "ne") {
+                        bmi_result.val("Неверная строка");
+                       
+                    }
+                    else {
+                        bmi_result.val(response.imt);
+                       
+                    }
+                },
+                error: function (xhr) {
+                    // Handle error if any
+                    alert(xhr);
+                }
+            });
+
+        });
+    </script>
+}

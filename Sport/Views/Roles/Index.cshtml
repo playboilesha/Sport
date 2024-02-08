@@ -1,0 +1,18 @@
+﻿@model IEnumerable<Microsoft.AspNetCore.Identity.IdentityRole>
+@{
+    Layout = "~/Views/Shared/_Menu.cshtml";
+}
+<h2>Список ролей</h2>
+<table class="table">
+    @foreach (var role in Model)
+    {
+        <tr>
+            <td class="text">@role.Name</td>
+            <td>
+               
+            </td>
+        </tr>
+    }
+</table>
+<a asp-action="Create">Добавить роль</a>
+<a asp-action="UserList">Список пользователей</a>

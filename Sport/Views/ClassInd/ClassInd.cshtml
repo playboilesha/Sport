@@ -1,0 +1,251 @@
+﻿
+@{
+    Layout = "~/Views/Shared/_Menu.cshtml";
+}
+
+@*<form>
+        <p><strong>Выбери спорт</strong></p>
+        <p>
+            <select name="hero">
+                <option value="s1">Скейт</option>
+                <option value="s2" selected>Фитнесс</option>
+                <option value="s3">Бокс</option>
+            </select>
+            <br />
+
+
+            <input type="submit" value="Отправить">
+        </p>
+        <p><strong>Выбери дату</strong></p>
+        <p>
+            <select name="hero">
+                <option value="s1">Скейт</option>
+                <option value="s2" selected>Фитнесс</option>
+                <option value="s3">Бокск</option>
+            </select>
+            <br />
+        </p>
+    </form>*@
+<link rel="stylesheet" href="~/css/ClassInd.css" />
+    
+@*<form method="post" asp-controller="ClassInd" asp-route-userName="@User.Identity.Name" asp-action="ZapisInd">*@
+<p><strong>Выбери спорт</strong></p>
+<select class="form-select" aria-label="Default select example" id="firstList" name="sport">
+    <option value="100">Какой спорт?</option>
+    <option value="Skate">Скейт</option>
+    <option value="Fitness">Фитнесс</option>
+    <option value="Box">Бокс</option>
+
+</select>
+<br />
+<p><strong>Выберите тренера</strong></p>
+<select class="form-select" aria-label="Default select example" id="secondList" name="secondList">
+    <option value="100">Выберете тренера</option>
+</select>
+
+
+<br />
+<p><strong>Выберите дату</strong></p>
+<select class="form-select" aria-label="Default select example" id="dataList" name="dataList">
+    <option value="100">Выберите дату</option>
+</select>
+<br />
+<p><strong>Доступное время:</strong></p>
+<select class="form-select" aria-label="Default select example" id="timeList" name="timeList">
+    <option value="100">Выберете время</option>
+</select>
+<br />
+<button type="submit" class="btn btn-outline-success" id="myButton">Отправить</button>
+<p id="Error" style="color:red;"></p>
+<br />
+<div id="zatemnenie">
+    <div id="okno">
+
+        <label>Спорт:<a id="sport"></a> </label>
+        <br />
+
+        <p><strong>Выбери ваш опыт</strong></p>
+        <select class="form-select" id="expirance" name="expirance">
+            <option>Опыт</option>
+            <option value="0">High</option>
+            <option value="1">Average</option>
+            <option value="2">Low</option>
+        </select>
+        <br />
+        <p><strong>Напишите о вашем опыте</strong></p>
+        <textarea id="aboutExpirance" name="aboutExpirance" required></textarea>
+        <br />
+        <div class="d-flex justify-content-center">
+            <button class="btn-outline-success" type="button" id="myButton2">Отправить</button>
+        </div>
+
+        <br />
+        <div class="d-flex justify-content-center">
+            <a href="#" id="close">Закрыть окно</a>
+        </div>
+    </div>
+    </div>
+<a style="visibility:hidden;" href="#zatemnenie" id="vspl">Вызвать всплывающее окно</a>
+@section scripts {
+    <script>
+        $(document).ready(function () {
+            $('#firstList').change(function () {
+                var selectedValue = $(this).val();
+
+                // Send AJAX request to the controller
+                $.ajax({
+                    url: '/ClassInd/GetCoach',
+                    type: 'GET',
+                    data: { selectedValue: selectedValue },
+                    success: function (response) {
+                        // Update the second list with the retrieved data
+                        var secondList = $('#secondList');
+
+                        // Clear existing options
+                        secondList.empty();
+                        secondList.append('<option value="">Выберете тренера</option>');
+                        // Add new options from the response
+
+                        response.forEach(function (option) {
+                            secondList.append('<option value="' + option.value + '">' + option.label + '</option>');
+                        });
+
+                    },
+                    error: function (xhr, status, error) {
+                        console.log('Error:', error);
+                    }
+                });
+            });
+        });
+        $(document).ready(function () {
+            $('#secondList').change(function () {
+                var selectedValue = $(this).val();
+
+                // Send AJAX request to the controller
+                $.ajax({
+                    url: '/ClassInd/GetDate',
+                    type: 'GET',
+                    data: { CoachId: selectedValue },
+                    success: function (response) {
+                        // Update the second list with the retrieved data
+                        var dataList = $('#dataList');
+
+                        // Clear existing options
+                        dataList.empty();
+
+                        // Add new options from the response
+                        dataList.append('<option value="">Выберете дату</option>');
+                        response.forEach(function (option) {
+                            dataList.append('<option value="' + option.value + '">' + option.label + '</option>');
+                        });
+
+                    },
+                    error: function (xhr, status, error) {
+                        console.log('Error:', error);
+                    }
+                });
+            });
+        });
+        $(document).ready(function () {
+            $('#dataList').change(function () {
+                var selectedValue = $(this).val();
+                var selectedCoach = $('#secondList').val();
+                // Send AJAX request to the controller
+                $.ajax({
+                    url: '/ClassInd/GetTime',
+                    type: 'GET',
+                    data: { Date: selectedValue, CoachId: selectedCoach },
+                    success: function (response) {
+                        // Update the second list with the retrieved data
+                        var timeList = $('#timeList');
+
+                        // Clear existing options
+                        timeList.empty();
+
+                        // Add new options from the response
+                        timeList.append('<option value="">Выберете время</option>');
+                        response.forEach(function (option) {
+                            timeList.append('<option value="' + option.value + '">' + option.label + '</option>');
+                        });
+
+                    },
+                    error: function (xhr, status, error) {
+                        console.log('Error:', error);
+                    }
+                });
+            });
+        });
+        $('#myButton').on('click', function () {
+            var firstList = $('#firstList').val();
+            var secondList = $('#secondList').val();
+            var dataList = $('#dataList').val();
+            var timeList = $('#timeList').val();
+            if (firstList == 100 || secondList == 100 || dataList == 100 || timeList == 100) {
+                error.text("Введите данные");
+            }
+            else {
+                $.ajax({
+
+                    url: '/ClassInd/CheckStudent', // Replace Controller/Action with the actual controller and action name
+                    type: 'GET',
+                    data: { sport: firstList, coachId: secondList, date: dataList, time: timeList },
+                    success: function (response) {
+                        // Display response in a pop-up window
+                        if (response == "null") {
+                            var error = $('#Error');
+                            error.text("Введите информацию о себе");
+                            $('#sport').append(`<a >${firstList}</a>`);
+                            $('#vspl')[0].click();
+                        }
+                        else {
+                            var error = $('#Error');
+                            error.text("Вы записаны");
+
+                        }
+
+
+                    },
+                    error: function (xhr) {
+                        // Handle error if any
+                        alert('Error: ' + xhr.statusText);
+                    }
+                });
+            }
+
+        });
+        $('#myButton2').on('click', function () {
+            var expirance = $('#expirance').val();
+            var aboutExpirance = $('#aboutExpirance').val();
+            var sport  = $('#firstList').val();
+            alert(expirance + aboutExpirance + sport)
+            $.ajax({
+
+                url: '/ClassInd/AboutStudent1', // Replace Controller/Action with the actual controller and action name
+                type: 'POST',
+                data: { expirance: expirance, aboutExpirance: aboutExpirance, sport: sport },
+                success: function (response) {
+                    // Display response in a pop-up window
+                    
+                    var error = $('#Error');
+                    error.empty();
+                    if (response == "bad") {
+                        error.text("Введите данные");
+                    }
+                    else {
+                        error.text("Информация о вас заполнена");
+                        $('#close')[0].click();
+                    }
+                  
+
+
+                },
+                error: function (xhr) {
+                    // Handle error if any
+                    alert('Error: ' + xhr.statusText);
+                }
+            });
+
+        });
+
+    </script>
+}

@@ -1,0 +1,105 @@
+﻿@using Microsoft.AspNetCore.Http
+@using System.Security.Claims
+@{
+    var user = ViewContext.HttpContext.User;
+    var role = user.FindFirst(ClaimTypes.Role)?.Value;
+}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>@ViewData["Title"] - Sport</title>
+    <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
+    <link rel="stylesheet" href="~/css/site.css" />
+    <link rel="stylesheet" href="https://unicons.iconscout.com/release/v2.1.9/css/unicons.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.5.0/css/bootstrap.min.css">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM" crossorigin="anonymous"></script>
+    <link rel="stylesheet" href="/css/menuCoach.css">
+    <link rel="stylesheet" href="/css/menuUser.css">
+    <link rel="stylesheet" href="/css/Coach.css">
+    <link rel="stylesheet" href="~/css/CommentCard.css" />
+    <link rel="stylesheet" href="~/css/HallStyle.css" />
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.8.1/font/bootstrap-icons.css">
+
+
+
+</head>
+<body>
+
+    <nav class="menu">
+        <ul>
+            <li><a href="/Home/MainUser">Главная</a></li>
+
+            <li class="dropdown">
+                <a class="dropbtn" href="">Спорт &#9662;</a>
+                <div class="dropdown-content">
+                    <a asp-controller="Sports" asp-action="Skate">Скейт</a>
+                    <a asp-controller="Sports" asp-action="Fitness">Фитнес</a>
+                    <a asp-controller="Sports" asp-action="Box">Бокс</a>
+                </div>
+            </li>
+            <li><a asp-controller="Coach" asp-action="Coach">Тренера</a></li>
+            <li><a asp-controller="Hall" asp-action="Hall">Залы</a></li>
+            <li class="dropdown">
+                <a class="dropbtn" asp-controller="ClassInd" asp-action="ClassInd">Индивидуалные занятия &#9662;</a>
+                <div class="dropdown-content">
+                    <a asp-controller="ClassInd" asp-action="ClassInd">Запись</a>
+                    <a asp-controller="ClassInd" asp-action="CheckInd">Просмотр занятий</a>
+
+                </div>
+            </li>
+            <li class="dropdown">
+                <a class="dropbtn">Групповые занятия &#9662;</a>
+                <div class="dropdown-content">
+                    <a asp-controller="ClassInd" asp-action="ClassInd">Запись</a>
+                    <a asp-controller="ClassGroup" asp-action="CheckGroup">Просмотр рассписания</a>
+
+                </div>
+            </li>
+
+            <li><a href="/About/About">О нас</a></li>
+            @if (User.Identity.IsAuthenticated)
+            {
+                <li>
+                    <div class="username-line1">
+                        <form method="post" asp-controller="Account" asp-action="Main">
+                            <p>юсер: <span id="username"><a href="/Account/About">@User.Identity.Name </a></span></p>
+                        </form>
+                    </div>
+                </li>
+                <li>
+                    <div class="username-line">
+                        <form method="post" asp-controller="Account" asp-action="Main">
+                            <input type="submit" href="" value="Выйти" class="double-border-button" />
+                        </form>
+
+
+                    </div>
+                </li>
+            }
+            @*else
+                {
+                    <li class="larger-element">
+                        <a asp-controller="Account" asp-action="Login">Вход</a>
+                    </li>
+                    <li>
+                        <a asp-controller="Account" asp-action="Register">Регистрация</a>
+                    </li>
+                       }*@
+
+
+        </ul>
+    </nav>
+    <div class="container">
+        <main role="main" class="pb-3">
+            @RenderBody()
+        </main>
+    </div>
+    <script src="~/lib/jquery/dist/jquery.min.js"></script>
+    <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="~/js/site.js" asp-append-version="true"></script>
+    @RenderSection("Scripts", required: false)
+</body>
+</html>

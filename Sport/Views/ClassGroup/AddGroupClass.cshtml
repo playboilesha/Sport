@@ -1,0 +1,68 @@
+﻿
+@model Sport.ViewModels.ScheduleViewModel
+
+@{
+    Layout = "~/Views/Shared/_Menu.cshtml";
+}
+
+
+<div class="container">
+    <div class="row">
+        <div class="mr-auto ml-auto w-50 p-3   bg-light">
+            <div class="text-center">
+                <a><strong> Добавление группового занятия</strong></a>
+            </div>
+            <br />
+            <form method="post" asp-controller="ClassGroup" asp-action="AddGroupClass" class="form" role="form">
+                <label class="form-label">Зал</label>
+                <br />
+                <select class="form-control" aria-label="Default select example" name="hallId" id="shallId">
+                   
+                    @foreach (var h in ViewBag.halls)
+                    {
+                        <option value="@h.Id">@h.Name</option>
+
+                    }
+                </select>
+                <br />
+                <label class="form-label">Дата </label> <br />
+                <input class="form-control" name="date" id="calendarDate" placeholder="Дата" type="date" />
+                <br />
+                <label class="form-label">Время </label>
+                <br />
+                <select name="time" id="time" aria-label="Default select example" class="form-control">
+                   
+                    <option value="9:00">9:00</option>
+                    <option value="10:00">10:00</option>
+                    <option value="11:00">11:00</option>
+                    <option value="12:00">12:00</option>
+                    <option value="13:00">13:00</option>
+                    <option value="14:00">14:00</option>
+                    <option value="15:00">15:00</option>
+                    <option value="16:00">16:00</option>
+                    <option value="17:00">17:00</option>
+                    <option value="18:00">18:00</option>
+
+                </select>
+                <br />
+                <label class="form-label">Опыт </label>
+                <br />
+                <select id="expirance" class="form-control" name="expirance">
+                   
+                    <option value="0">High</option>
+                    <option value="1">Average</option>
+                    <option value="2">Low</option>
+                </select>
+
+                <br />
+                <button class="btn btn-lg btn-primary btn-block" type="submit">Отправить</button>
+                <a style="color:red;">@ViewBag.Status</a>
+            </form>
+        </div>
+    </div>
+</div>
+
+
+
+
+

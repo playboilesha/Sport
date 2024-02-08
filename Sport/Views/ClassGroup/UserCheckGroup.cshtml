@@ -1,0 +1,167 @@
+﻿@{
+    Layout = "~/Views/Shared/_Menu.cshtml";
+}
+<br />
+
+<h3 align="center">Ваши групповые занятия занятия</h3>
+<br />
+<h4>Фильтр: @ViewBag.Filter</h4>
+<div class="d-flex align-items-start w-25">
+
+    <select class="form-control" aria-label="Default select example" name="Filter" id="Filter">
+
+        <option value="">Выберите фильтр</option>
+        <option value="Предстоящее">Предстоящее</option>
+        <option value="Отменённые">Отменённые</option>
+        <option value="Прошедшие">Прошедшие</option>
+
+    </select>
+    <br />
+
+</div>
+<br />
+@if (ViewBag.rasspis.Count == 0)
+{
+    <h3 style="color:gray; text-align:center;">Не найдено(</h3>
+}
+@foreach (var raspis in ViewBag.rasspis)
+{
+    if (raspis.GroupClassesRaspis.Date.AddHours(raspis.GroupClassesRaspis.EndTime.Hours) < DateTime.Now)
+    {
+        <div class="card">
+            <!-- Изображение -->
+            <img height="300" width="300" src="@raspis.GroupClassesRaspis.Coach.Image" alt="...">
+            <!-- Текстовый контент -->
+
+            <div class="card-body">
+                <h4 class="card-title">Занятие <a>@raspis.GroupClassesRaspis.Id</a></h4>
+            </div>
+            <!-- Список List groups -->
+            <ul class="list-group list-group-flush">
+                <li class="list-group-item">Время: <a>@raspis.GroupClassesRaspis.StartTime.ToString("hh\\:mm") (1 час)</a></li>
+                <li class="list-group-item">Дата: <a>@raspis.GroupClassesRaspis.Date.ToShortDateString()</a></li>
+                <li class="list-group-item">Зал: <a>@raspis.GroupClassesRaspis.Hall.Name</a></li>
+                <li class="list-group-item">Тренер: <a>@raspis.GroupClassesRaspis.Coach.FirstName @raspis.GroupClassesRaspis.Coach.LastName</a></li>
+                <li class="list-group-item">Свободно: <a>@(raspis.GroupClassesRaspis.Hall.CountPeople - raspis.GroupClassesRaspis.ReservedPlace)/@raspis.GroupClassesRaspis.Hall.CountPeople</a></li>
+
+
+            </ul>
+            <!-- Текстовый контент -->
+            <div class="card-body">
+                @*@if (raspis.Status == Status.Good)
+                    {
+                        <i class="bi bi-patch-check-fill text-success"></i>
+                        <a id="status" class=" text-success">@raspis.Status</a>
+
+                    }
+                    @if (raspis.Status == Status.Wait)
+                    {
+                        <i class="bi bi-patch-question-fill text-warning"></i>
+                        <a id="status" class=" text-warning">@raspis.Status</a>
+
+                    }
+                    @if (raspis.Status == Status.Cancel)
+                    {
+                        <i class="bi bi-patch-minus-fill  text-danger"></i>
+                        <a id="status" class=" text-danger">@raspis.Status</a>
+
+                    }*@
+                <br />
+                <a class="text-danger">Закончилось</a>
+
+
+
+
+            </div>
+
+        </div><!-- Конец карточки -->
+    }
+    else
+    {
+        <div class="card">
+            <!-- Изображение -->
+            <img height="300" width="300" src="@raspis.GroupClassesRaspis.Coach.Image" alt="...">
+            <!-- Текстовый контент -->
+
+            <div class="card-body">
+                <h4 class="card-title">Занятие <a>@raspis.GroupClassesRaspis.Id</a></h4>
+            </div>
+            <!-- Список List groups -->
+            <ul class="list-group list-group-flush">
+                <li class="list-group-item">Время: <a>@raspis.GroupClassesRaspis.StartTime.ToString("hh\\:mm") (1 час)</a></li>
+                <li class="list-group-item">Дата: <a>@raspis.GroupClassesRaspis.Date.ToShortDateString()</a></li>
+                <li class="list-group-item">Зал: <a>@raspis.GroupClassesRaspis.Hall.Name</a></li>
+                <li class="list-group-item">Тренер: <a>@raspis.GroupClassesRaspis.Coach.FirstName @raspis.GroupClassesRaspis.Coach.LastName</a></li>
+                <li class="list-group-item">Свободно: <a>@(raspis.GroupClassesRaspis.Hall.CountPeople - raspis.GroupClassesRaspis.ReservedPlace)/@raspis.GroupClassesRaspis.Hall.CountPeople</a></li>
+                @if (raspis.GroupClassesRaspis.StatusGroup == StatusGroup.Сancel)
+                {
+                    <li class="list-group-item">Статус: <a class="text-danger"> Отменено</a></li>
+                }
+
+            </ul>
+            <!-- Текстовый контент -->
+            <div class="card-body">
+                @if (raspis.Status == Status.Good)
+                {
+                    <i class="bi bi-patch-check-fill text-success"></i>
+                    <a id="status" class=" text-success">@raspis.Status</a>
+
+                }
+                @if (raspis.Status == Status.Wait)
+                {
+                    <i class="bi bi-patch-question-fill text-warning"></i>
+                    <a id="status" class=" text-warning">@raspis.Status</a>
+
+                }
+                @if (raspis.Status == Status.Cancel)
+                {
+                    <i class="bi bi-patch-minus-fill  text-danger"></i>
+                    <a id="status" class=" text-danger">@raspis.Status</a>
+
+                }
+
+
+                <br />
+                @if (raspis.GroupClassesRaspis.Date.AddHours(raspis.GroupClassesRaspis.EndTime.Hours) > DateTime.Now && raspis.GroupClassesRaspis.StatusGroup == StatusGroup.Good || raspis.GroupClassesRaspis.StatusGroup == StatusGroup.Filled)
+                {
+                    <br />
+                    <form method="post" asp-action="CancelGroupClass" asp-controller="ClassGroup" asp-route-id="@raspis.Id">
+                        <button class="btn btn-danger" type="submit">Отменить</button>
+                    </form>
+                }
+
+
+            </div>
+
+        </div><!-- Конец карточки -->
+    }
+
+    <br />
+    <br />
+}
+@section scripts {
+    <script>
+        $(document).ready(function () {
+            $('#Filter').change(function () {
+                var selectedValue = $(this).val();
+
+                // Send AJAX request to the controller
+                $.ajax({
+                    url: '/ClassGroup/StatusFilterUserGroup',
+                    type: 'POST',
+                    data: { Filter: selectedValue },
+                    success: function (result) {
+                        // Update the second list with the retrieved data
+                        window.location.href = '/ClassGroup/UserCheckGroup?Filter=' + selectedValue + '';
+
+
+                    },
+                    error: function (xhr, status, error) {
+                        alert('Error:', error);
+                    }
+                });
+            });
+        });
+
+    </script>
+}

@@ -1,0 +1,220 @@
+﻿@model Sport.Models.Klub
+
+@{
+    Layout = "~/Views/Shared/_Menu.cshtml";
+}
+<style>
+
+
+
+
+    body {
+        background: #2a2a2b;
+    }
+
+
+
+    .inputWithIcon {
+        position: relative;
+    }
+
+        .inputWithIcon i {
+            position: absolute;
+            right: 0;
+            top: -3px;
+            padding: 14px 13px;
+            transition: 0.3s;
+        }
+
+
+
+
+    input[type ="text"]::-webkit-input-placeholder {
+        color: grey;
+    }
+
+    input[type ="text"] {
+        color: black;
+    }
+
+    textarea[type ="text"] {
+        color: black;
+    }
+</style>
+<div class="container rounded bg-white mt-5 mb-5">
+    <div class="row">
+        <div class="col-md-5 border-right">
+            <div class="p-3 py-5">
+                <div class="d-flex justify-content-between align-items-center mb-3">
+                    <h4 class="text-right">Изменение клуба</h4>
+                </div>
+
+
+
+
+
+                <div class="row mt-3">
+                    <div class="col-md-12">
+                        <label class="labels">Имя</label><input id="name" type="text" class="form-control" value="@Model.Name" placeholder="name">
+                    </div>
+                    <div class="col-md-12"><label class="labels">Почта</label><input id="email" type="text" class="form-control" placeholder="Email" value="@Model.Email"></div>
+                    <div class="col-md-12"><label class="labels">Год основания</label><input id="year" type="text" class="form-control" placeholder="Year" value="@Model.Year"></div>
+
+
+
+                    <div class="col-md-12"><label class="labels">О вашем опыте</label><textarea id="about" type="text" class="form-control" placeholder="about" value="">@Model.About</textarea></div>
+
+
+
+                    <div class="col-md-12"><label class="labels">Телефон</label><input id="tel" type="text" class="form-control" placeholder="tel" value="@Model.Telephone"></div>
+
+
+
+                    <div class="col-md-12"><label class="labels">Вконтакте сслыка</label><input id="vk" type="text" class="form-control" placeholder="vk" value="@Model.Vk"></div>
+
+                </div>
+
+                <div class="mt-5 text-center"><button id="updateInfoUser" type="button" class="btn btn-outline-success">Изменить</button></div>
+
+
+                <p id="verificationResult"></p>
+            </div>
+
+        </div>
+        <div class="col-md-4">
+            <div class="p-3 py-5">
+                
+                <div class="d-flex justify-content-between align-items-center mb-3">
+                    <h4 class="text-right">Изменение спорта</h4>
+                </div><br>
+                <div class="col-md-12">
+                    <label class="labels">Выберите спорт</label>
+
+                    <select class="form-select" aria-label="Default select example" id="sport" name="sport">
+                        @foreach (var item in ViewBag.sp)
+                        {
+
+
+                            <option value="@item.Id">@item.Name</option>
+                        }
+                    </select>
+
+
+                </div> <br>
+                <div class="col-md-12"><label class="labels">О спорте</label><input  id="sportyear" type="text" class="form-control" placeholder="year" value="@ViewBag.Year"></div> <br>
+                <div class="col-md-12"><label class="labels">Год</label><textarea  id="sportabout" type="text" class="form-control" placeholder="about" value="">@ViewBag.About</textarea></div>
+                <div class="col-md-12 mt-4">
+                    <button id="izm" type="button" class="btn btn-outline-success">Изменить</button>
+                    <p id="rez"></p>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+@section scripts {
+    <script>
+        $(document).ready(function () {
+            $('#updateInfoUser').on('click', function () {
+                var name = $('#name').val();
+                var email = $('#email').val();
+                var year = $('#year').val();
+                var about = $('#about').val();
+                var tel = $('#tel').val();
+                var vk = $('#vk').val();
+                var st = $('#verificationResult');
+
+                // Send AJAX request to the controller
+                $.ajax({
+                    url: '/About/EditAbout',
+                    type: 'POST',
+                    data: { name: name, email: email, year: year, about: about, tel: tel, vk: vk },
+                    success: function (response) {
+                        // Display response in a pop-up window
+                        if (response == "null") {
+                            st.text("Введите значение");
+                        }
+                        else if (response == "n") {
+                            st.text("неверный номер");
+                        }
+                        else if (response == "chislo") {
+                            st.text("Введите число");
+                        }
+                        else {
+                            st.text("Все хорошо")
+                        }
+
+
+                    },
+                    error: function (xhr, status, error) {
+                        alert(error);
+                    }
+                });
+            });
+        });
+        $(document).ready(function () {
+            $('#sport').change(function () {
+                var selectedValue = $(this).val();
+
+                // Send AJAX request to the controller
+                $.ajax({
+                    url: '/About/EditAboutSport',
+                    type: 'POST',
+                    data: { sportId: selectedValue },
+                    success: function (response) {
+                        // Display response in a pop-up window
+                        if (response == "null") {
+
+                            $('#yearsport').val("");
+                            $('#aboutsportsport').val("");
+                        }
+                        else {
+
+
+                            $('#aboutsport').val(response.about);
+
+                            $('#yearsport').val(response.year);
+
+                        }
+
+
+                    },
+                    error: function (xhr, status, error) {
+                        alert(error);
+                    }
+                });
+            });
+        });
+        $(document).ready(function () {
+            $('#izm').on('click', function () {
+                var sport = $('#sport').val();
+                var sportabout = $('#sportabout').val();
+                var sportyear = $('#sportyear').val();
+                var rez = $('#rez');
+               
+
+                // Send AJAX request to the controller
+                $.ajax({
+                    url: '/About/Edit',
+                    type: 'Post',
+                    data: { sportId: sport, sportabout: sportabout, sportyear: sportyear },
+                    success: function (response) {
+                        if (response == "null") {
+                            rez.text("Введите значение");
+                        }
+                      
+                        else if (response == "chislo") {
+                            rez.text("Введите число");
+                        }
+                        else {
+                            rez.text("Все хорошо")
+                        }
+
+                    },
+                    error: function (xhr, status, error) {
+                        alert(xhr);
+                    }
+                });
+            });
+        });
+ </script>
+}
